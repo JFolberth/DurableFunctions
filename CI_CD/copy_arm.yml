@@ -12,7 +12,7 @@ jobs:
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/**.ARM**/*.json'
+      Contents: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.ARMProjectName }}/*.json'
       TargetFolder: '$(build.artifactstagingdirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ARM'
