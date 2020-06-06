@@ -41,7 +41,7 @@ stages:
             location: 'Central US'
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-            csmParametersFile: '/Infrastructure/DurableFunctions/DurableFunction/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
+            csmParametersFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
             deploymentMode: 'Incremental'
 
 
