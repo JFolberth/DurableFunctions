@@ -13,7 +13,7 @@ variables:
 - name: appServicePlanProjectName
   value: 'DurableFunctionAppService'
 - name: ARMSolutionPath
-  value: 'DurableFunctions'
+  value: 'Infrastructure/DurableFunctions'
 
 stages:
 - stage: CopyARM
