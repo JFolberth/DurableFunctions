@@ -27,8 +27,8 @@ stages:
             resourceGroupName: 'rg-durablefunctions-dev-cus'
             location: 'Central US'
             templateLocation: 'Linked artifact'
-            csmFile: 'Infrastructure/DurableFunctions/DurableFunction/durablefn.deploy.json'
-            csmParametersFile: 'Infrastructure/DurableFunctions/DurableFunction/durablefn.parameters.dev.json'
+            csmFile: '/Infrastructure/DurableFunctions/DurableFunction/durablefn.deploy.json'
+            csmParametersFile: '/Infrastructure/DurableFunctions/DurableFunction/durablefn.parameters.dev.json'
             deploymentMode: 'Incremental'
 
 
