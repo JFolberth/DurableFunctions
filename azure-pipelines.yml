@@ -40,8 +40,8 @@ stages:
             resourceGroupName: 'rg-durablefunctions-dev-cus'
             location: 'Central US'
             templateLocation: 'Linked artifact'
-            csmFile: '$(Pipeline.Workspace)/a/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-            csmParametersFile: '$(Pipeline.Workspace)/a/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
+            csmFile: '/home/vsts/work/1/a/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
+            csmParametersFile: '/home/vsts/work/1/a/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
             deploymentMode: 'Incremental'
 
 
