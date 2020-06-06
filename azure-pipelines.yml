@@ -1,0 +1,46 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- name: appServicePlanProjectName
+  value: 'DurableFunctionAppService'
+- name: ARMSolutionPath
+  value: 'DurableFunctions'
+
+stages:
+- stage: CopyARM
+  jobs:
+  - template: copy-arm.yml@repositoryTemplate
+    parameters: 
+      armProjectName: ${{ variables.appServicePlanProjectName }}
+      solutionPath: $(ARMSolutionsPath)
+- stage: DeployARM
+  jobs:
+  - deployment: Deploy_ARM
+    environment: DEV
+    strategy:
+     runOnce:
+      deploy:
+       steps:
+        - task: AzureResourceManagerTemplateDeployment@3
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
+            subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: 'rg-durablefunctions-dev-cus'
+            location: 'Central US'
+            templateLocation: 'Linked artifact'
+            csmFile: '/Infrastructure/DurableFunctions/DurableFunction/durablefn.deploy.json'
+            csmParametersFile: '/Infrastructure/DurableFunctions/DurableFunction/durablefn.parameters.dev.json'
+            deploymentMode: 'Incremental'
+
+
