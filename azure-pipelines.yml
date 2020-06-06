@@ -21,7 +21,7 @@ stages:
   - template: /CI_CD/copy_arm.yml
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
-      solutionPath: $(ARMSolutionsPath)
+      solutionPath: $(ARMSolutionPath)
 - stage: DeployARM
   jobs:
   - deployment: Deploy_ARM
