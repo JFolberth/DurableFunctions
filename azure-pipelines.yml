@@ -30,7 +30,7 @@ stages:
      runOnce:
       deploy:
        steps:
-        - task: AzureResourceManagerTemplateDeployment@3
+        - task: AzureResourceManagerTemplateDeployment@2
           inputs:
             deploymentScope: 'Resource Group'
             azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
