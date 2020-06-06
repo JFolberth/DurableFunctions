@@ -18,7 +18,7 @@ variables:
 stages:
 - stage: CopyARM
   jobs:
-  - template: /CI_CD/copy-arm.yml
+  - template: /CI_CD/copy_arm.yml
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
       solutionPath: $(ARMSolutionsPath)
