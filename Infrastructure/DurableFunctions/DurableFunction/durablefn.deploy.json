@@ -1,0 +1,161 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "type": "string",
+      "metadata": {
+        "description": "Environment resource will live in"
+      }
+    },
+    "appServicePlanNameBase": {
+      "type": "string",
+      "defaultValue": "DurableFunction",
+      "metadata": {
+        "description": "Actual unique name in the full App Service Plan name"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
+
+    "functions_EXTENSION_VERSION": {
+      "type": "string",
+      "defaultValue": "~3",
+      "metadata": {
+        "description": "Azure Function version"
+      }
+    }
+  },
+  "variables": {
+    "regionReference": {
+      "centralus": "cus",
+      "eastus": "eus",
+      "westus": "wus",
+      "westus2": "wus2"
+    },
+    "serviceName": "DurableFunction",
+    "regionDeployment": "[toLower(variables('regionReference')[resourceGroup().location])]",
+    "baseName": "[toLower(concat(variables('serviceName'),'-',parameters('environmentName')))]",
+    "appServicePlanName": "[concat(variables('baseName'),'-as-',variables('regionDeployment'))]",
+    "storageAccountName": "[toLower(concat(variables('serviceName'),parameters('environmentName'),'sa',variables('regionDeployment')))]",
+    "functionAppName": "[concat(variables('baseName'),'-fn-',variables('regionDeployment'))]",
+    "appInsightsName": "[concat(variables('baseName'),'-ai-',variables('regionDeployment'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "tags": {
+        "displayName": "Storage Account",
+        "applicationName": "[variables('serviceName')]"
+      },
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true
+      }
+    },
+    {
+      "apiVersion": "2019-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionAppName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "tags": {
+        "displayName": "Function App",
+        "applicationName": "[variables('serviceName')]"
+      },
+      "properties": {
+        "name": "[variables('functionAppName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "identity": {
+          "type": "SystemAssigned"
+        },
+        "httpsOnly": true,
+        "clientAffinityEnabled": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "resources": [
+        {
+          "apiVersion": "2019-08-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+            "Microsoft.ApplicationInsights.AzureWebSites",
+            "[resourceId('microsoft.insights/components/', variables('appInsightsName'))]"
+          ],
+          "properties": {
+            "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(concat('microsoft.insights/components/', variables('appInsightsName'))).InstrumentationKey]",
+            "FUNCTIONS_EXTENSION_VERSION": "[parameters('functions_EXTENSION_VERSION')]",
+            "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]",
+            "WEBSITE_CONTENTSHARE": "[toLower(variables('serviceName'))]",
+            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
+          }
+        },
+        {
+          "apiVersion": "2019-08-01",
+          "name": "web",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+          ],
+          "properties": {
+            "alwaysOn": "false"
+
+          }
+        },
+        {
+          "apiVersion": "2019-08-01",
+          "name": "Microsoft.ApplicationInsights.AzureWebSites",
+          "type": "siteextensions",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]",
+            "[resourceId('microsoft.insights/components/', variables('appInsightsName'))]"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "[variables('appInsightsName')]",
+      "type": "microsoft.insights/components",
+      "apiVersion": "2015-05-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "AppInsight",
+        "applicationName": "[variables('serviceName')]"
+
+      },
+      "kind": "string",
+      "properties": {
+        "Application_Type": "web",
+        "applicationId": "[variables('appInsightsName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]"
+      ]
+    }
+  ]
+}

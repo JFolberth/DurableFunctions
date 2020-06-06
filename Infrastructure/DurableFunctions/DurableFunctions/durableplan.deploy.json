@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "type": "string",
+      "metadata": {
+        "description": "Environment resource will live in"
+      }
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "EP2"
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1
+    }
+  },
+  "variables": {
+    "regionReference": {
+      "centralus": "cus",
+      "eastus": "eus",
+      "westus": "wus",
+      "westus2": "wus2"
+    },
+    "serviceName": "DurableFunction",
+    "regionDeployment": "[toLower(variables('regionReference')[resourceGroup().location])]",
+    "baseName": "[toLower(concat(variables('serviceName'),'-',parameters('environmentName')))]",
+    "appServicePlanName": "[concat(variables('baseName'),'-as-',variables('regionDeployment'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "capacity": "[parameters('skuCapacity')]"
+      },
+      "kind": "app",
+      "properties": {
+      },
+      "tags": {
+        "displayName": "App Service Plan",
+        "applicationName": "[variables('serviceName')]"
+      }
+    }
+  ]
+}
