@@ -9,6 +9,17 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
+    subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-durablefunctions-dev-cus'
+    location: 'Central US'
+    templateLocation: 'Linked artifact'
+    csmFile: 'Infrastructure/DurableFunctions/DurableFunction/durablefn.deploy.json'
+    csmParametersFile: 'Infrastructure/DurableFunctions/DurableFunction/durablefn.parameters.dev.json'
+    deploymentMode: 'Incremental'
 
 
