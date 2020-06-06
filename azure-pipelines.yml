@@ -9,7 +9,19 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+- name: appServicePlanProjectName
+  value: 'DurableFunctionAppService'
+- name: ARMSolutionPath
+  value: 'DurableFunctions'
+
 stages:
+- stage: CopyARM
+  jobs:
+  - template: copy-arm.yml@repositoryTemplate
+    parameters: 
+      armProjectName: ${{ variables.appServicePlanProjectName }}
+      solutionPath: $(ARMSolutionsPath)
 - stage: DeployARM
   jobs:
   - deployment: Deploy_ARM
