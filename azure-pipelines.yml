@@ -22,27 +22,7 @@ stages:
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
       solutionPath: $(ARMSolutionPath)
-- stage: DeployARM
-  jobs:
-  - deployment: Deploy_ARM
-    environment: DEV
-    strategy:
-     runOnce:
-      deploy:
-       steps:
-        - download: none
-        - task: AzureResourceManagerTemplateDeployment@3
-          inputs:
-            deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
-            subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
-            action: 'Create Or Update Resource Group'
-            resourceGroupName: 'rg-durablefunctions-dev-cus'
-            location: 'Central US'
-            templateLocation: 'Linked artifact'
-            csmFile: 'drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
-            csmParametersFile: 'drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
-            deploymentMode: 'Incremental'
+
 
 
 
