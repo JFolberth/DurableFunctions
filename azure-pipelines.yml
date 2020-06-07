@@ -44,8 +44,8 @@ stages:
           subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
           resourceGroupName: 'rg-durablefunctions-dev-cus'
           location: 'Central US'
-          csmFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-          csmParametersFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
+          csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
+          csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
 
 
 
