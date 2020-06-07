@@ -30,7 +30,7 @@ stages:
      runOnce:
       deploy:
        steps:
-        - download: none
+        - download: 'drop'
         - task: AzureResourceManagerTemplateDeployment@3
           displayName: 'ARM Template deployment: Resource Group scope'
           inputs:
@@ -38,8 +38,8 @@ stages:
             subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
             resourceGroupName: 'rg-durablefunctions-dev-cus'
             location: 'Central US'
-            csmFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-            csmParametersFile: 'drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
+            csmFile: '/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
+            csmParametersFile: '/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
 
 
 
