@@ -16,3 +16,5 @@ jobs:
       TargetFolder: '$(build.artifactstagingdirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ARM'
+    inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
