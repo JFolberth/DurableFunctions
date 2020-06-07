@@ -30,7 +30,6 @@ stages:
      runOnce:
       deploy:
        steps:
-        - download: 'drop'
         - task: AzureResourceManagerTemplateDeployment@3
           displayName: 'ARM Template deployment: Resource Group scope'
           inputs:
