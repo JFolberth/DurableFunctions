@@ -12,6 +12,8 @@ pool:
 variables:
 - name: appServicePlanProjectName
   value: 'DurableFunctionAppService'
+- name: durableFunctionAppProjectName
+  value: 'DurableFunctionApp'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
 
@@ -21,6 +23,10 @@ stages:
   - template: /CI_CD/copy_arm.yml
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
+      solutionPath: $(ARMSolutionPath)
+  - template: /CI_CD/copy_arm.yml
+    parameters: 
+      armProjectName: ${{ variables.durableFunctionAppProjectName }}
       solutionPath: $(ARMSolutionPath)
 - stage: DeployARM
   jobs:
