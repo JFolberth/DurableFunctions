@@ -44,8 +44,8 @@ stages:
           subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
           resourceGroupName: 'rg-durablefunctions-dev-cus'
           location: 'Central US'
-          csmFile: '/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
-          csmParametersFile: '/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
+          csmFile: ' /home/vsts/work/1/a/drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
+          csmParametersFile: ' /home/vsts/work/1/a/drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
 
 
 
