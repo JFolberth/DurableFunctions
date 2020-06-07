@@ -32,17 +32,14 @@ stages:
        steps:
         - download: none
         - task: AzureResourceManagerTemplateDeployment@3
+          displayName: 'ARM Template deployment: Resource Group scope'
           inputs:
-            deploymentScope: 'Resource Group'
             azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
             subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
-            action: 'Create Or Update Resource Group'
             resourceGroupName: 'rg-durablefunctions-dev-cus'
             location: 'Central US'
-            templateLocation: 'Linked artifact'
             csmFile: '$(System.DefaultWorkingDirectory)/_JFolberth.DurableFunctions/drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.deploy.json'
             csmParametersFile: '$(System.DefaultWorkingDirectory)/_JFolberth.DurableFunctions/drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
-            deploymentMode: 'Incremental'
 
 
 
