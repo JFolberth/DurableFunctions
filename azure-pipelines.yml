@@ -13,7 +13,7 @@ variables:
 - name: appServicePlanProjectName
   value: 'DurableFunctionAppService'
 - name: durableFunctionAppProjectName
-  value: 'DurableFunctionApp'
+  value: 'DurableFunction'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
 
