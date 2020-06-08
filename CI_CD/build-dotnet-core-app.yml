@@ -3,7 +3,7 @@ parameters:
   BuildConfiguration: Release
   appName: ''
 jobs:
-- job : Build App
+- job : BuildApp
   steps:
     - task: DotNetCoreCLI@2
       displayName: dotnet build
