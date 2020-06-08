@@ -17,7 +17,7 @@ variables:
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
 - name: appName
-  value:'DurableFunctionCode1'
+  value: 'DurableFunctionCode1'
 
 stages:
 - stage: BuildArtifcates
