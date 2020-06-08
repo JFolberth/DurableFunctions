@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -46,5 +48,28 @@ namespace DurableFunctionCode1
 
             return starter.CreateCheckStatusResponse(req, instanceId);
         }
+        [FunctionName("StatusCheck")]
+        public static async Task<IActionResult> StatusCheck(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestMessage req,
+        [DurableClient] IDurableClient client,
+        ILogger log)
+        {
+            var runtimeStatus = new List<OrchestrationRuntimeStatus>();
+
+            runtimeStatus.Add(OrchestrationRuntimeStatus.Pending);
+            runtimeStatus.Add(OrchestrationRuntimeStatus.Running);
+
+            var status = await client.GetStatusAsync(new DateTime(2015, 10, 10), null, runtimeStatus);
+            return (ActionResult)new OkObjectResult(new Status() { HasRunning = (status.Count != 0) });
+        }
+    }
+
+    internal class Status
+    {
+        public Status()
+        {
+        }
+
+        public bool HasRunning { get; set; }
     }
 }

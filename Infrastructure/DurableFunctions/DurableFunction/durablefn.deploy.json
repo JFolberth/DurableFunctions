@@ -48,6 +48,8 @@
     "baseName": "[toLower(concat(variables('serviceName'),'-',parameters('environmentName')))]",
     "appServicePlanName": "[concat(variables('baseName'),'-as-',variables('regionDeployment'))]",
     "storageAccountName": "[toLower(concat(variables('serviceName'),parameters('environmentName'),'sa',variables('regionDeployment')))]",
+    "storageAccountNameslot1": "[toLower(concat(variables('serviceName'),'1',parameters('environmentName'),'sa',variables('regionDeployment')))]",
+    "storageAccountNameslot2": "[toLower(concat(variables('serviceName'),'2',parameters('environmentName'),'sa',variables('regionDeployment')))]",
     "functionAppName": "[concat(variables('baseName'),'-fn-',variables('regionDeployment'))]",
     "appInsightsName": "[concat(variables('baseName'),'-ai-',variables('regionDeployment'))]"
   },
@@ -59,7 +61,49 @@
       "location": "[resourceGroup().location]",
       "kind": "Storage",
       "tags": {
-        "displayName": "Storage Account",
+        "displayName": "Shared Storage Account",
+        "applicationName": "[variables('serviceName')]"
+      },
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountNameslot1')]",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "tags": {
+        "displayName": "Slot 1 Storage Account",
+        "applicationName": "[variables('serviceName')]"
+      },
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountNameslot2')]",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "tags": {
+        "displayName": "Slot 2 Storage Account",
         "applicationName": "[variables('serviceName')]"
       },
       "sku": {
@@ -93,7 +137,8 @@
         "clientAffinityEnabled": false
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot1'))]"
       ],
       "resources": [
         {
@@ -112,7 +157,8 @@
             "FUNCTIONS_WORKER_RUNTIME": "dotnet",
             "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]",
             "WEBSITE_CONTENTSHARE": "[toLower(variables('serviceName'))]",
-            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]"
+            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value,';EndpointSuffix=core.windows.net')]",
+            "DurableManagementStorage": 
           }
         },
         {
@@ -127,6 +173,23 @@
 
           }
         },
+        {
+          "type": "slots",
+          "apiVersion": "2019-08-01",
+          "name": "staging",
+          "kind": "functionapp",
+          "location": "[resourceGroup().location]",
+          "identity": {
+            "type": "SystemAssigned"
+          },
+          "properties": {
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot2'))]"
+          ]
+        }
         {
           "apiVersion": "2019-08-01",
           "name": "Microsoft.ApplicationInsights.AzureWebSites",
