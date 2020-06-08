@@ -1,0 +1,18 @@
+parameters:
+  SolutionPath: ''
+  BuildConfiguration: Release
+  appName: ''
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build
+    inputs:
+      projects: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.appName }}/*.csproj'
+      arguments: '--configuration ${{ parameters.BuildConfiguration }}'
+  - task: DotNetCoreCLI@2
+    displayName: dotnet publish
+    inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.appName }}/*.csproj'
+        arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)'
+        zipAfterPublish: True

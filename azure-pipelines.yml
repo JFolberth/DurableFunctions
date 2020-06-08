@@ -14,18 +14,24 @@ variables:
   value: 'DurableFunctionAppService'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
+- name: appName
+  value:'DurableFunctionCode1'
 
 stages:
-- stage: CopyARM
+- stage: BuildArtifcates
   jobs:
   - template: /CI_CD/copy_arm.yml
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
       solutionPath: $(ARMSolutionPath)
-- stage: DeployARM
+  - template: /CI_CD/build-dotnet-core-app.yml
+    parameters:
+       solutionPath: $(ARMSolutionPath)
+       appName: $(appName)
+- stage: DeployApp
   jobs:
   - deployment: Deploy_ARM
-    environment: DEV
+    environment: DurableFunctionCode1_DEV
     strategy:
      runOnce:
       deploy:
@@ -40,7 +46,22 @@ stages:
             location: 'Central US'
             csmFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
             csmParametersFile: 'drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
-
+   - deployment: Deploy_ARM
+    environment: DurableFunctionCode1_DEV
+    strategy:
+     runOnce:
+      deploy:
+       steps:
+        - download: none
+        - task: AzureRmWebAppDeployment@3
+          inputs:
+            azureSubscription: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
+            WebAppName: 'durablefunction-dev-fn-cus'
+            Package: '${{ parameters.artifactPath }}'
+            TakeAppOfflineFlag: true
+            UseWebDeploy: true
+            RemoveAdditionalFilesFlag: true
+            ExcludeFilesFromAppDataFlag: true
 
 
 

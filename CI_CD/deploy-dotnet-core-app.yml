@@ -1,0 +1,22 @@
+parameters:
+  - name: envName
+    type: string
+    values:
+      - dev
+      - qa
+  - name: appName
+    type: string
+  - name: artifactPath
+    type: string
+steps:
+  - task: AzureRmWebAppDeployment@3
+    inputs:
+      azureSubscription: '$(subscriptionPrefix)-${{ parameters.envName }}'
+      WebAppName: >-
+        shc${{ parameters.envName }}-$(organization)-${{
+        parameters.appName }}-fn-$(regionAbrv)
+      Package: '${{ parameters.artifactPath }}'
+      TakeAppOfflineFlag: true
+      UseWebDeploy: true
+      RemoveAdditionalFilesFlag: true
+      ExcludeFilesFromAppDataFlag: true
