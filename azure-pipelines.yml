@@ -64,16 +64,7 @@ stages:
           location: 'Central US'
           csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.deploy.json'
           csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.parameters.dev.json'
-        - download: none
-        - task: AzureResourceManagerTemplateDeployment@3
-          displayName: 'ARM Template deployment: Resource Group scope'
-          inputs:
-            azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
-            subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
-            resourceGroupName: 'rg-durablefunctions-dev-cus'
-            location: 'Central US'
-            csmFile: '$(Pipeline.Workspace)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-            csmParametersFile: 'drop/Infrastructure/DurableFunctions/DurableFunctionAppService/durableplan.parameters.dev.json'
+
    - deployment: Deploy_ARM
     environment: DurableFunctionCode1_DEV
     strategy:
