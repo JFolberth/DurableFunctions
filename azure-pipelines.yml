@@ -12,6 +12,8 @@ pool:
 variables:
 - name: appServicePlanProjectName
   value: 'DurableFunctionAppService'
+- name: durableFunctionAppProjectName
+  value: 'DurableFunction'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
 - name: appName
@@ -36,6 +38,32 @@ stages:
      runOnce:
       deploy:
        steps:
+       - download: none
+       - task: DownloadBuildArtifacts@0
+         inputs:
+          artifactName: 'drop'
+          buildType: 'current'
+          downloadType: 'single'
+          downloadPath: '$(System.ArtifactsDirectory)'
+       - task: AzureResourceManagerTemplateDeployment@3
+         displayName: 'ARM Template deployment: Resource Group scope'
+         inputs:
+          azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
+          subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
+          resourceGroupName: 'rg-durablefunctions-dev-cus'
+          location: 'Central US'
+          csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
+          csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
+
+       - task: AzureResourceManagerTemplateDeployment@3
+         displayName: 'ARM Template deployment: Resource Group scope'
+         inputs:
+          azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
+          subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
+          resourceGroupName: 'rg-durablefunctions-dev-cus'
+          location: 'Central US'
+          csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.deploy.json'
+          csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.parameters.dev.json'
         - download: none
         - task: AzureResourceManagerTemplateDeployment@3
           displayName: 'ARM Template deployment: Resource Group scope'
