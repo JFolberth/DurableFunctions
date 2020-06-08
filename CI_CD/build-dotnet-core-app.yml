@@ -2,6 +2,8 @@ parameters:
   SolutionPath: ''
   BuildConfiguration: Release
   appName: ''
+jobs:
+- job : Build App
 steps:
   - task: DotNetCoreCLI@2
     displayName: dotnet build
