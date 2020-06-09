@@ -16,6 +16,8 @@ variables:
   value: 'DurableFunction'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
+- name: CodePath
+  value: 'Code/DurableFunctionCode'
 - name: appName
   value: 'DurableFunctionCode1'
 
