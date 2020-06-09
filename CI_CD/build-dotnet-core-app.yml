@@ -18,4 +18,3 @@ jobs:
           projects: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.appName }}/*.csproj'
           arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)'
           zipAfterPublish: True
-    - template: /CI_CD/publish.yml

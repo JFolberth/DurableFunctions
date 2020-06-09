@@ -22,7 +22,7 @@ variables:
   value: 'DurableFunctionCode1'
 
 stages:
-- stage: BuildArtifcates
+- stage: BuildArtifcats
   jobs:
   - template: /CI_CD/copy_arm.yml
     parameters: 
@@ -36,6 +36,9 @@ stages:
     parameters:
        solutionPath: $(codePath)
        appName: $(appName)
+- stage: PublishArtifacts
+  jobs:
+  - template: /CI_CD/publish.yml
 - stage: DeployApp
   jobs:
   - deployment: Deploy_ARM
