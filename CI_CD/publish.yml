@@ -1,7 +1,7 @@
 jobs:
 - job : PublishArtifacts
   steps:
-  - task: PublishPipelineArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact: drop'
     inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
