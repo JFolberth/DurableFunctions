@@ -28,6 +28,10 @@ stages:
     parameters: 
       armProjectName: ${{ variables.appServicePlanProjectName }}
       solutionPath: $(ARMSolutionPath)
+  - template: /CI_CD/copy_arm.yml
+    parameters: 
+      armProjectName: ${{ variables.durableFunctionAppProjectName }}
+      solutionPath: $(ARMSolutionPath)
   - template: /CI_CD/build-dotnet-core-app.yml
     parameters:
        solutionPath: $(codePath)
