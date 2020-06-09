@@ -1,7 +1,3 @@
-parameters:
-  DependsOn: []
-
-  
 
 jobs:
 - job : PublishArtifacts
