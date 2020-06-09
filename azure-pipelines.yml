@@ -16,7 +16,7 @@ variables:
   value: 'DurableFunction'
 - name: ARMSolutionPath
   value: 'Infrastructure/DurableFunctions'
-- name: CodePath
+- name: codePath
   value: 'Code/DurableFunctionCode'
 - name: appName
   value: 'DurableFunctionCode1'
@@ -30,7 +30,7 @@ stages:
       solutionPath: $(ARMSolutionPath)
   - template: /CI_CD/build-dotnet-core-app.yml
     parameters:
-       solutionPath: $(ARMSolutionPath)
+       solutionPath: $(codePath)
        appName: $(appName)
 - stage: DeployApp
   jobs:
