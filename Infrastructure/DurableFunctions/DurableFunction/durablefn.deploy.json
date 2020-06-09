@@ -189,7 +189,7 @@
             "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]",
             "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot2'))]"
           ]
-        }
+        },
         {
           "apiVersion": "2019-08-01",
           "name": "Microsoft.ApplicationInsights.AzureWebSites",
