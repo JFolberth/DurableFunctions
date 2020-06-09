@@ -14,3 +14,4 @@ jobs:
       SourceFolder: '$(Build.SourcesDirectory)'
       Contents: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.ARMProjectName }}/*.json'
       TargetFolder: '$(build.artifactstagingdirectory)'
+  - template: /CI_CD/publish.yml

@@ -1,7 +1,3 @@
-
-jobs:
-- job : PublishArtifacts
-  dependsOn: ${{ parameters.DependsOn }}
   steps:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'

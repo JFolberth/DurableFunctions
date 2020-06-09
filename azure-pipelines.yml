@@ -36,8 +36,6 @@ stages:
     parameters:
        solutionPath: $(codePath)
        appName: $(appName)
-- stage: PublishArtifacts
-  - template: /CI_CD/publish.yml
 - stage: DeployApp
   jobs:
   - deployment: Deploy_ARM
