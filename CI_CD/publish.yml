@@ -1,3 +1,5 @@
+jobs:
+- job : PublishArtifacts
   steps:
   - task: PublishPipelineArtifacts@1
     displayName: 'Publish Artifact: drop'
