@@ -14,8 +14,3 @@ jobs:
       SourceFolder: '$(Build.SourcesDirectory)'
       Contents: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.ARMProjectName }}/*.json'
       TargetFolder: '$(build.artifactstagingdirectory)'
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: ARM'
-    inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-        ArtifactName: 'drop'

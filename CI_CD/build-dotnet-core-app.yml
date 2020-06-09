@@ -14,7 +14,7 @@ jobs:
       displayName: dotnet publish
       inputs:
           command: publish
-          publishWebProjects: true
+          publishWebProjects: false
           projects: '$(Build.SourcesDirectory)/${{ parameters.SolutionPath }}/${{ parameters.appName }}/*.csproj'
           arguments: '--configuration ${{ parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)'
           zipAfterPublish: True
