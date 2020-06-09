@@ -1,17 +1,10 @@
 parameters:
-  - name: envName
-    type: string
-    values:
-      - dev
-      - qa
-  - name: appName
-    type: string
   - name: artifactPath
     type: string
 steps:
   - task: AzureRmWebAppDeployment@3
     inputs:
-      azureSubscription: '$(subscriptionPrefix)-${{ parameters.envName }}'
+      azureSubscription: 'Visual Studio Enterprise Subscription(7893e52e-7759-4f17-9742-bd594ec7f695)'
       WebAppName: 'durablefunction-dev-fn-cus'
       Package: '${{ parameters.artifactPath }}'
       TakeAppOfflineFlag: true
