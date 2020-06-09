@@ -71,6 +71,10 @@ stages:
           csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.deploy.json'
           csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.parameters.dev.json'
 
+       - template: /CI_CD/deploy-dotnet-core-app.yml
+         parameters:
+            artifactPath: '$(build.artifactstagingdirectory)/drop/$(appName).zip'
+
 
 
 
