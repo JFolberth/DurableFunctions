@@ -3,6 +3,11 @@ jobs:
   steps:
   - task: RunARMTTKTests@1
     inputs:
-        templatelocation: '$(System.DefaultWorkingDirectory)\*'
-        resultLocation: '$(System.DefaultWorkingDirectory)\ARM-TTK.XML'
+        templatelocation: '$(System.DefaultWorkingDirectory)\Infrastructure\*.json'
+        resultLocation: '$(System.DefaultWorkingDirectory)\ttkreults'
+  - task: PublishTestResults@2
+    inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)\results\*-armttk.xml'
+    condition: always()
 
