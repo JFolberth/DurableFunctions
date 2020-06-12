@@ -24,6 +24,7 @@
       "westus": "wus",
       "westus2": "wus2"
     },
+    "resourceGroupLocation": "[resourceGroup().location]",
     "serviceName": "DurableFunction",
     "regionDeployment": "[toLower(variables('regionReference')[resourceGroup().location])]",
     "baseName": "[toLower(concat(variables('serviceName'),'-',parameters('environmentName')))]",
@@ -32,9 +33,9 @@
   "resources": [
     {
       "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2018-02-01",
+      "apiVersion": "2019-08-01",
       "name": "[variables('appServicePlanName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('resourceGroupLocation')]",
       "sku": {
         "name": "[parameters('skuName')]",
         "capacity": "[parameters('skuCapacity')]"
