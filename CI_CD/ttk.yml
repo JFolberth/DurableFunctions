@@ -5,3 +5,4 @@ jobs:
     inputs:
         templatelocation: '$(System.DefaultWorkingDirectory)\*'
         resultLocation: '$(System.DefaultWorkingDirectory)\ARM-TTK.XML'
+
