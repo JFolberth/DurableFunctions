@@ -40,6 +40,7 @@ stages:
        appName: $(appName)
 - stage: PublishArtifacts
   jobs:
+  - template: /CI_CD/ttk.yml
   - template: /CI_CD/publish.yml
 - stage: DeployApp
   jobs:
