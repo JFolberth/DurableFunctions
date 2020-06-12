@@ -1,4 +1,4 @@
-  jobs:
+jobs:
 - job : RunARMTTK
   steps:
   - task: RunARMTTKTests@1
