@@ -41,7 +41,6 @@ stages:
 - stage: PublishArtifacts
   jobs:
   - template: /CI_CD/ttk.yml
-  - template: /CI_CD/publish.yml
 - stage: DeployApp
   jobs:
   - deployment: Deploy_ARM
