@@ -162,7 +162,8 @@
             "FUNCTIONS_WORKER_RUNTIME": "dotnet",
             "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts')).keys[0].value,';EndpointSuffix=core.windows.net')]",
             "WEBSITE_CONTENTSHARE": "[toLower(variables('serviceName'))]",
-            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts')).keys[0].value,';EndpointSuffix=core.windows.net')]"
+            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts')).keys[0].value,';EndpointSuffix=core.windows.net')]",
+            "DurableManagementStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot1')), providers('Microsoft.Storage', 'storageAccounts')).keys[0].value,';EndpointSuffix=core.windows.net')]"
           }
         },
         {
@@ -189,6 +190,20 @@
           "properties": {
             "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
           },
+          "resources": [
+            {
+              "apiVersion": "2019-08-01",
+              "name": "appsettings",
+              "type": "config",
+              "dependsOn": [
+                "[resourceId('Microsoft.Web/Sites/Slots', variables('functionAppName'), 'staging')]"
+              ],
+              "properties": {
+                "DurableManagementStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot2')), providers('Microsoft.Storage', 'storageAccounts')).keys[0].value,';EndpointSuffix=core.windows.net')]"
+
+              }
+            }
+          ],
           "dependsOn": [
             "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]",
             "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountNameslot2'))]"
