@@ -4,5 +4,5 @@ jobs:
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact: drop'
     inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
+        PathtoPublish: '$(System.DefaultWorkingDirectory)'
         ArtifactName: 'drop'
