@@ -56,8 +56,8 @@ stages:
           subscriptionId: '7893e52e-7759-4f17-9742-bd594ec7f695'
           resourceGroupName: 'rg-durablefunctions-dev-cus'
           location: 'Central US'
-          csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
-          csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
+          csmFile: '$(build.artifactstagingdirectory)/drop/s/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.deploy.json'
+          csmParametersFile: '$(build.artifactstagingdirectory)/drop/s/$(ARMSolutionPath)/$(appServicePlanProjectName)/durableplan.parameters.dev.json'
 
        - task: AzureResourceManagerTemplateDeployment@3
          displayName: 'ARM Template deployment: Resource Group scope'
@@ -67,11 +67,11 @@ stages:
           resourceGroupName: 'rg-durablefunctions-dev-cus'
           location: 'Central US'
           csmFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.deploy.json'
-          csmParametersFile: '$(build.artifactstagingdirectory)/drop/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.parameters.dev.json'
+          csmParametersFile: '$(build.artifactstagingdirectory)/drop/s/$(ARMSolutionPath)/$(durableFunctionAppProjectName)/durablefn.parameters.dev.json'
 
        - template: /CI_CD/deploy-dotnet-core-app.yml
          parameters:
-            artifactPath: '$(System.DefaultWorkingDirectory)/drop/$(appName).zip'
+            artifactPath: '$(System.DefaultWorkingDirectory)/drop/s/$(appName).zip'
 
 
 
